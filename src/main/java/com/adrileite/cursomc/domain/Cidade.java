@@ -1,47 +1,37 @@
 package com.adrileite.cursomc.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-@Entity  //mapeamento da tabela produto
-public class Produto {
+@Entity
+public class Cidade implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private Double preco;
 	
-	@JsonBackReference //não mostra a lista aqui
-	@ManyToMany
-	@JoinTable(name = "PRODUTO_CATEGORIA", 
-		joinColumns = @JoinColumn(name = "produto_id"),
-		inverseJoinColumns = @JoinColumn(name = "categoria_id")
-	)
 	
-	private List<Categoria> categorias = new ArrayList<>();
-	
-	//construtores vazio
-	public Produto(){
-	
+	@ManyToOne
+	@JoinColumn(name="estado_id")
+	private Estado estado;
+
+	public Cidade(){
+		
 	}
 
-	//construtores com parametros
-	public Produto(Integer id, String nome, Double preco) {
+	public Cidade(Integer id, String nome, Estado estado) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.preco = preco;
+		this.estado = estado;
 	}
 
 	public Integer getId() {
@@ -60,24 +50,14 @@ public class Produto {
 		this.nome = nome;
 	}
 
-	public Double getPreco() {
-		return preco;
+	public Estado getEstado() {
+		return estado;
 	}
 
-	public void setPreco(Double preco) {
-		this.preco = preco;
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 
-	public List<Categoria> getCategorias() {
-		return categorias;
-	}
-
-	public void setCategorias(List<Categoria> categorias) {
-		this.categorias = categorias;
-	}
-
-	
-	// criar hashCode
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -94,7 +74,7 @@ public class Produto {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Produto other = (Produto) obj;
+		Cidade other = (Cidade) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -104,7 +84,4 @@ public class Produto {
 	}
 	
 	
-	
-	
-
 }
