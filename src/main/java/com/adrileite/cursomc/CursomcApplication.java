@@ -9,12 +9,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.adrileite.cursomc.domain.Categoria;
 import com.adrileite.cursomc.domain.Cidade;
+import com.adrileite.cursomc.domain.Cliente;
+import com.adrileite.cursomc.domain.Endereco;
 import com.adrileite.cursomc.domain.Estado;
 import com.adrileite.cursomc.domain.Produto;
+import com.adrileite.cursomc.domain.enums.TipoCliente;
 import com.adrileite.cursomc.repositories.CategoriaRepository;
 import com.adrileite.cursomc.repositories.CidadeRepository;
+import com.adrileite.cursomc.repositories.ClienteRepository;
 import com.adrileite.cursomc.repositories.EstadoRepository;
 import com.adrileite.cursomc.repositories.ProdutoRepository;
+import com.adrileite.cursomc.repositories.EnderecoRepository;
+
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner{
@@ -30,6 +36,12 @@ public class CursomcApplication implements CommandLineRunner{
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -69,6 +81,20 @@ public class CursomcApplication implements CommandLineRunner{
 		
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Cliente cli1 = new Cliente (null, "Maria Silva", "maria@gmail.com", "14860832800", TipoCliente.PESSOAFISICA);
+
+		cli1.getTelefones().addAll(Arrays.asList("39233434","39233445"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "02805270", cli1, c1);
+		Endereco e2 = new Endereco(null, "Rua Matddo", "400", "Apto 305", "Bairro", "02805271", cli1, c2);
+			
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+
 
 		
 	}
