@@ -3,10 +3,12 @@ package com.adrileite.cursomc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.adrileite.cursomc.domain.Categoria;
 import com.adrileite.cursomc.repositories.CategoriaRepository;
+import com.adrileite.cursomc.services.exceptions.DataIntegrityException;
 import com.adrileite.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -33,4 +35,15 @@ public class CategoriaService {
 		find(obj.getId()); //verifica se existe 
 		return repo.save(obj)	; //serve para inserir e atualizar
 	}
+	
+	public void delete (Integer id) {
+		find(id);
+		try{
+			repo.deleteById(id);
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possivel excluir um categoria que possui produto");
+		}
+	}
+	
 }
