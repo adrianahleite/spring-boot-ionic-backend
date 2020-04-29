@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.adrileite.cursomc.domain.Categoria;
+import com.adrileite.cursomc.domain.Cliente;
 import com.adrileite.cursomc.dto.CategoriaDTO;
 import com.adrileite.cursomc.repositories.CategoriaRepository;
 import com.adrileite.cursomc.services.exceptions.DataIntegrityException;
@@ -37,8 +38,9 @@ public class CategoriaService {
 	
 	
 	public Categoria update(Categoria obj) {
-		find(obj.getId()); //verifica se existe 
-		return repo.save(obj)	; //serve para inserir e atualizar
+		Categoria newObj = find(obj.getId()); //verifica se existe 
+		updateData(newObj, obj);
+		return repo.save(newObj)	; //serve para inserir e atualizar
 	}
 	
 	public void delete (Integer id) {
@@ -64,6 +66,11 @@ public class CategoriaService {
 	
 	public Categoria fromDTO (CategoriaDTO objDto){
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+	
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
+		
 	}
 	
 }
