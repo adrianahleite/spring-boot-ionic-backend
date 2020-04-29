@@ -17,6 +17,7 @@ import com.adrileite.cursomc.domain.Endereco;
 import com.adrileite.cursomc.domain.enums.TipoCliente;
 import com.adrileite.cursomc.dto.ClienteDTO;
 import com.adrileite.cursomc.dto.ClienteNewDTO;
+import com.adrileite.cursomc.repositories.CidadeRepository;
 import com.adrileite.cursomc.repositories.ClienteRepository;
 import com.adrileite.cursomc.repositories.EnderecoRepository;
 import com.adrileite.cursomc.services.exceptions.DataIntegrityException;
@@ -39,19 +40,22 @@ public class ClienteService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName())); 
 		
 	}
-	
-	
-	public Cliente update(Cliente obj) {
-		Cliente newObj = find(obj.getId()); //verifica se existe 
-		updateData(newObj, obj);
-		return repo.save(newObj)	; //serve para inserir e atualizar
-	}
+
 	
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
 		repo.save(obj)	;
 		enderecoRepository.saveAll(obj.getEnderecos());
 		return obj;
+	}
+	
+	
+
+	
+	public Cliente update(Cliente obj) {
+		Cliente newObj = find(obj.getId()); //verifica se existe 
+		updateData(newObj, obj);
+		return repo.save(newObj)	; //serve para inserir e atualizar
 	}
 	
 	public void delete (Integer id) {
